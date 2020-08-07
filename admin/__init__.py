@@ -37,18 +37,19 @@ db = SQLAlchemy(app)
 
 basic_auth = BasicAuth(app)
 
-class Pontos(db.Model):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(255), unique=True, nullable=False)
-    contador = db.Column(db.Integer, default=0)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    nome = db.Column(db.String(255), default='')
+    pontos = db.Column(db.Integer, default=20)
+    pontos_pro = db.Column(db.Integer, default=20)
     motivos = db.Column(db.String(5000), default='')
-    log_actions = db.Column(db.String(5000), default='')
-
+    
     def __repr__(self):
-        return '<Pontos %r:%r:%r:%r>' % (self.id, self.nome, self.contador, self.log_actions)
+        return '<User %r:%r>' % (self.id, self.email)
 
 admin = Admin(app, name='pontos', template_mode='bootstrap3')
-admin.add_view(ModelView(Pontos, db.session))
+admin.add_view(ModelView(User, db.session))
 
 
 @app.route('/')
